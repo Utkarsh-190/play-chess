@@ -1,28 +1,25 @@
-import { WebSocketServer } from 'ws';
-import http from 'http';
+import { WebSocket, WebSocketServer } from 'ws';
+import { GameManager } from './GameManager';
 
 const PORT = 8080;
 
-// const server = http.createServer(function (req, res) {
-//   console.log("Request in http server", req.headers['accept-language']);
-//   res.writeHead(200, {'Content-Type': 'text/plain'});
-//   res.write('Hello World new !');
-//   res.end();
-// })
-// const wss = new WebSocketServer({ server });
+const gameManager = new GameManager();
+
 const wss = new WebSocketServer({ port: PORT });
-console.log("wss created")
-wss.on('connection', function connection(ws) {
-  console.log("connection started");
+console.log("websocket server started");
+wss.on('connection', function connection(ws : WebSocket) {
+  console.log(`connection started for ${ws}`);
   ws.on('error', console.error);
+  ws.send('you are connected to chessify'); 
 
-  ws.on('message', function message(data) {
-    console.log('received: %s', data);
+  ws.on("message", (data) => {
+    const msg = JSON.parse(data.toString());
+    console.log("received message: ", msg);
+    gameManager.handleMessage(msg, ws);
+  })
+
+  ws.on('close', function close() {
+    console.log(`${ws} disconnected`);
   });
-
-  ws.send('something'); 
 });
-
-// server.listen(PORT, () => {
-//   console.log(`server is listening on port ${PORT}`);
-// });
+ 
