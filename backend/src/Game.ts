@@ -28,6 +28,7 @@ export class Game {
             console.log("it's not your move");
             return;
         }
+        
         const moveData = {
             type: MOVE,
             move: move
