@@ -65,12 +65,16 @@ export const Chessboard = ({board, setBoard, chess, socket}: {
                 type: MOVE,
                 move: curMove
             }))
+            if(chess.isGameOver()){
+                console.log("game over made by player");
+                alert("Game Over!!");
+            }
         }
     }
 
     return (
         <div className="flex flex-col">
-            {board.map((row, i) => {
+            {board.reverse().map((row, i) => {
                 return <div key={i} className="w-160 flex">
                     {row.map((cell, j) => {
                         const curCellLocation = String.fromCharCode(97 + (j%8)) + String(8 - (i)) as Square;

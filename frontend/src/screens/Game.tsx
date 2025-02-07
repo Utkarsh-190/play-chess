@@ -14,6 +14,8 @@ export const Game = () => {
     const [chess, setChess] = useState(new Chess());
     // TODO: remove board state as we can use chess.board() everywhere
     const [board, setBoard] = useState(chess.board());
+    // TODO: not using flipped state, but will need it in future
+    const [flipped, setFlipped] = useState(false);
 
     const movesContainerRef = useRef(null);
 
@@ -23,7 +25,7 @@ export const Game = () => {
     const runBots = () => {
         let intervalId = setInterval(() => {
             if(chess.isGameOver()){
-                console.log("game over");
+                console.log("game over made by bot");
                 // alert("Game Over!!");
             } else {
                 const moves = chess.moves()
@@ -74,11 +76,23 @@ export const Game = () => {
         }
     }, [socket]);
 
+    const flipBoard = () => {
+        board.map(row => row.reverse());
+        board.reverse();
+        setFlipped((flipped) => {
+            return !flipped;
+        });
+    }
+
     // if(!socket) return <div className="text-white">Connecting...</div>
 
     return <div className="h-full p-10 text-white grid grid-cols-3 gap-4 justify-items-center">
-        <div className="col-span-2">
+        <div className="col-span-2 flex">
             <Chessboard board={board} setBoard={setBoard} chess={chess} socket={socket}/>
+            <div className="m-1">
+                <img onClick={flipBoard} src={"/flip.svg"} alt="flip board icon" 
+                className="w-8 p-1 rotate-90 rounded cursor-pointer hover:bg-sky-500/25 "/>
+            </div>
         </div>
         <div className="h-full col-span-1 flex flex-col items-center">
             <div className=" m-2 h-[10%]">
