@@ -48,7 +48,7 @@ export class Game {
             console.log(`game over, winner is ${turn}`);
             const gameOverMessage = {
                 type: GAME_OVER,
-                winner: turn
+                winner: this.chess.isDraw() ? "draw" : turn
             }
             this.player1.send(JSON.stringify(gameOverMessage));
             this.player2.send(JSON.stringify(gameOverMessage));

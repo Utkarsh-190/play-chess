@@ -1,6 +1,6 @@
 import { WebSocket } from "ws";
 import { Game } from "./Game";
-import { INIT_GAME, MOVE } from "./Messages";
+import { INIT_GAME, JOIN_GAME, MOVE } from "./Messages";
 
 export class GameManager {
     games: Game[];
@@ -14,11 +14,13 @@ export class GameManager {
     }
 
     handleMessage(message: any, userSocket: WebSocket) {
-        if(message.type == INIT_GAME){
+        if(message.type == JOIN_GAME){
             if (this.pendingUser) {
                 console.log("player2 joined, starting game");
                 const newGame = new Game(this.pendingUser, userSocket);
                 this.games.push(newGame);
+                this.pendingUser.send(JSON.stringify({type: INIT_GAME, color: "w"}));
+                userSocket.send(JSON.stringify({type: INIT_GAME, color: "b"}));
                 this.pendingUser = null;
             } else {
                 console.log("player1 joined");

@@ -29,32 +29,35 @@ export function isPromoting(chess: Chess, from: Square, to: Square) {
     if (!['1', '8'].some((it) => to.endsWith(it))) {
       return false;
     }
-    console.log("chess.moves({ square: from, verbose: true }): ", chess.moves({ square: from, verbose: true }))
     return chess
             .moves({ square: from, verbose: true })
             .map((it) => it.to)
             .includes(to);
   }
 
-export const Chessboard = ({board, setBoard, chess, socket, setIsGameOver, flipped}: {
+export const Chessboard = ({board, setBoard, chess, socket, flipped, playerColor}: {
     board: ({
         square: Square;
         type: PieceSymbol;
         color: Color;
-    } | null)[][], setBoard: any, chess: Chess, socket: WebSocket | null, setIsGameOver: any, flipped: boolean
+    } | null)[][], setBoard: any, chess: Chess, socket: WebSocket | null, flipped: boolean, playerColor: Color | null
 }) => {
     console.log("board: ", board);
     const [from, setFrom] = useState<Square>();
 
     const handleCellClick = (piece: Piece, curCellLocation: Square) => {
-        console.log("cell clicked: ", piece);
-        console.log("or: ", curCellLocation);
+        if(chess.turn() !== playerColor) {
+            console.log("chess.turn(): ", chess.turn());
+            console.log("playerColor: ", playerColor);
+            return;
+        }
+        console.log("piece clicked: ", piece);
+        console.log("cell clicked: ", curCellLocation);
 
         if(piece && piece.color == chess.turn()) {
             setFrom(curCellLocation);
         } else if(from) {
             const isPromotingResult = isPromoting(chess, from, curCellLocation)
-            console.log("isPromotingResult", isPromotingResult);
             const curMove: Move = {
                 from: from,
                 to: curCellLocation,
@@ -63,6 +66,7 @@ export const Chessboard = ({board, setBoard, chess, socket, setIsGameOver, flipp
             setFrom(undefined);
 
             try {
+                console.log("move made by other player", curMove);
                 chess.move(curMove);
                 setBoard(chess.board());
                 // TODO: remove ? in 'socket?.' and handle if it can be null
@@ -72,11 +76,6 @@ export const Chessboard = ({board, setBoard, chess, socket, setIsGameOver, flipp
                 }))
             } catch (error) {
                 console.error("error: ", error);
-            }
-
-            if(chess.isGameOver()){
-                console.log("game over made by player");
-                setIsGameOver(true);
             }
         }
     }
@@ -96,7 +95,6 @@ export const Chessboard = ({board, setBoard, chess, socket, setIsGameOver, flipp
                                 ${(i+j)%2==0?"bg-sky-300":"bg-sky-600"}
                                 ${from == curCellLocation ? "border-2 border-white" : ""}`}>
                             <span>
-                                {/* {cell?.type} */}
                                 {piece && <img src={`${piece?.type}${piece?.color == 'w' ? "" : " black"}.svg`} alt="chess piece" />}
                             </span>
                         </div>
