@@ -14,8 +14,6 @@ export const Game = () => {
     const [chess, setChess] = useState(new Chess());
     // TODO: remove board state as we can use chess.board() everywhere
     const [board, setBoard] = useState(chess.board());
-    // TODO: not using flipped state, but will need it in future
-    const [flipped, setFlipped] = useState(false);
 
     const movesContainerRef = useRef(null);
 
@@ -79,9 +77,6 @@ export const Game = () => {
     const flipBoard = () => {
         board.map(row => row.reverse());
         board.reverse();
-        setFlipped((flipped) => {
-            return !flipped;
-        });
     }
 
     // if(!socket) return <div className="text-white">Connecting...</div>
