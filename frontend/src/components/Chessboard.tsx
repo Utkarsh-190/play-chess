@@ -36,12 +36,12 @@ export function isPromoting(chess: Chess, from: Square, to: Square) {
             .includes(to);
   }
 
-export const Chessboard = ({board, setBoard, chess, socket}: {
+export const Chessboard = ({board, setBoard, chess, socket, setIsGameOver, flipped}: {
     board: ({
         square: Square;
         type: PieceSymbol;
         color: Color;
-    } | null)[][], setBoard: any, chess: Chess, socket: WebSocket | null
+    } | null)[][], setBoard: any, chess: Chess, socket: WebSocket | null, setIsGameOver: any, flipped: boolean
 }) => {
     console.log("board: ", board);
     const [from, setFrom] = useState<Square>();
@@ -76,17 +76,20 @@ export const Chessboard = ({board, setBoard, chess, socket}: {
 
             if(chess.isGameOver()){
                 console.log("game over made by player");
-                alert("Game Over!!");
+                setIsGameOver(true);
             }
         }
     }
 
     return (
         <div className="flex flex-col">
-            {board.reverse().map((row, i) => {
+            {board.map((row, i) => {
+                const rowIndex = flipped ? 7 - i : i;
                 return <div key={i} className="w-160 flex">
-                    {row.map((piece, j) => {
-                        const curCellLocation = String.fromCharCode(97 + (j%8)) + String(8 - (i)) as Square;
+                    {board[rowIndex].map((col, j) => {
+                        const colIndex = flipped ? 7 - j : j;
+                        const piece = board[rowIndex][colIndex];
+                        let curCellLocation = String.fromCharCode(97 + (colIndex%8)) + String(8 - (rowIndex)) as Square;
                         return <div key={j} 
                                 onClick={() => {handleCellClick(piece, curCellLocation)}}
                                 className={`w-20 h-20 flex justify-center items-center 
