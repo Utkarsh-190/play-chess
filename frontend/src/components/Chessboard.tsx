@@ -42,7 +42,6 @@ export const Chessboard = ({board, setBoard, chess, socket, flipped, playerColor
         color: Color;
     } | null)[][], setBoard: any, chess: Chess, socket: WebSocket | null, flipped: boolean, playerColor: Color | null
 }) => {
-    console.log("board: ", board);
     const [from, setFrom] = useState<Square>();
 
     const handleCellClick = (piece: Piece, curCellLocation: Square) => {

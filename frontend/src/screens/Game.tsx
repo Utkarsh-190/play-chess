@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "../components/Button"
 import { useSocket } from "../hooks/useSocket";
-import {Chess, Color} from 'chess.js';
+import {Chess, Color, WHITE} from 'chess.js';
 import { Chessboard } from "../components/Chessboard";
 import { useNavigate } from "react-router-dom";
 
@@ -25,7 +25,7 @@ export const Game = () => {
 
     const movesContainerRef = useRef(null);
 
-    console.log("moves: ", chess.history({verbose: true}))
+    // console.log("moves: ", chess.history({verbose: true}))
 
     const runBots = () => {
         let intervalId = setInterval(() => {
@@ -107,7 +107,11 @@ export const Game = () => {
         }
         <div className="grid grid-cols-3 gap-4 justify-items-center">
             <div className="col-span-2 flex">
-                <Chessboard playerColor={playerColor} flipped={flipped} board={board} setBoard={setBoard} chess={chess} socket={socket}/>
+                <div>
+                    {playerColor && <div className="p-1 my-1 bg-sky-700/50 rounded text-center">{(playerColor==WHITE)!==(flipped) ? "Opponent" : "You"}</div>}
+                    <Chessboard playerColor={playerColor} flipped={flipped} board={board} setBoard={setBoard} chess={chess} socket={socket}/>
+                    {playerColor && <div className="p-1 my-1 bg-sky-700/50 rounded text-center">{(playerColor==WHITE)!==(flipped) ? "You" : "Opponent"}</div>}
+                </div>
                 <div className="m-1">
                     <img onClick={flipBoard} src={"/flip.svg"} alt="flip board icon" 
                     className="w-8 p-1 rotate-90 rounded cursor-pointer hover:bg-sky-500/25 "/>
