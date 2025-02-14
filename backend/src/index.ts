@@ -6,6 +6,10 @@ const PORT = process.env.PORT ? parseInt(process.env.PORT) : 8082;
 const WS_PORT = process.env.WS_PORT ? parseInt(process.env.WS_PORT) : 8083;
 
 const server = http.createServer((req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*'); // Allow all origins
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.write("This is the response from the server")
     res.end();
 })
