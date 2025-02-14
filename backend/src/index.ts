@@ -1,12 +1,19 @@
 import { WebSocket, WebSocketServer } from 'ws';
 import { GameManager } from './GameManager';
+import http from "http";
 
-const PORT = 8080;
+const PORT = process.env.PORT ? parseInt(process.env.PORT) : 8082;
+const WS_PORT = process.env.WS_PORT ? parseInt(process.env.WS_PORT) : 8083;
+
+const server = http.createServer((req, res) => {
+    res.write("This is the response from the server")
+    res.end();
+})
 
 const gameManager = new GameManager();
 
-const wss = new WebSocketServer({ port: PORT });
-console.log("websocket server started");
+const wss = new WebSocketServer({ server });
+console.log("websocket server started on PORT: ", PORT);
 wss.on('connection', function connection(ws : WebSocket) {
   console.log(`connection started for ${ws}`);
   ws.on('error', console.error);
@@ -23,3 +30,7 @@ wss.on('connection', function connection(ws : WebSocket) {
   });
 });
  
+server.listen((PORT), () => {
+  console.log("HTTPS server is Running on PORT: ", PORT);
+  console.log(`HTTPS server started on port ${server.address()}`);
+})
