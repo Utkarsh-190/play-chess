@@ -6,8 +6,8 @@ import path from "path";
 
 const PORT = process.env.PORT || 8082;
 const options = {
-  key: process.env.SSL_KEY || fs.readFileSync(path.join(__dirname, '..\\certs', 'key.pem')),
-  cert: process.env.SSL_CERT || fs.readFileSync(path.join(__dirname, '..\\certs', 'cert.pem'))
+  key: process.env.SSL_KEY || fs.readFileSync(path.join(__dirname, '../certs', 'key.pem')),
+  cert: process.env.SSL_CERT || fs.readFileSync(path.join(__dirname, '../certs', 'cert.pem'))
 };
 
 const server = https.createServer(options, (req, res) => {
