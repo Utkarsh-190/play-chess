@@ -15,7 +15,7 @@ export const Game = () => {
     const navigate = useNavigate();
     const socket = useSocket();
     // const dummyChess = new Chess();
-    const [chess, setChess] = useState(new Chess());
+    const [chess, _setChess] = useState(new Chess());
     // TODO: remove board state as we can use chess.board() everywhere
     const [board, setBoard] = useState(chess.board());
     const [playerColor, setPlayerColor] = useState<Color | null>(null)
@@ -27,24 +27,24 @@ export const Game = () => {
 
     // console.log("moves: ", chess.history({verbose: true}))
 
-    const runBots = () => {
-        let intervalId = setInterval(() => {
-            if(chess.isGameOver()){
-                console.log("game over made by bot");
-            } else {
-                const moves = chess.moves()
-                const move = moves[Math.floor(Math.random() * moves.length)]
-                console.log("curMove: ", move);
-                chess.move(move)
-                console.log("made a move: ", move);
-                setBoard(chess.board());
-            }
-        }, 200);
-        setTimeout(() => {
-            console.log("clearing interval")
-            clearInterval(intervalId);
-        }, 10000);
-    }
+    // const runBots = () => {
+    //     let intervalId = setInterval(() => {
+    //         if(chess.isGameOver()){
+    //             console.log("game over made by bot");
+    //         } else {
+    //             const moves = chess.moves()
+    //             const move = moves[Math.floor(Math.random() * moves.length)]
+    //             console.log("curMove: ", move);
+    //             chess.move(move)
+    //             console.log("made a move: ", move);
+    //             setBoard(chess.board());
+    //         }
+    //     }, 200);
+    //     setTimeout(() => {
+    //         console.log("clearing interval")
+    //         clearInterval(intervalId);
+    //     }, 10000);
+    // }
 
     useEffect(() => {
         const movesContainer = movesContainerRef.current as HTMLDivElement | null;

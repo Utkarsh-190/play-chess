@@ -2,8 +2,7 @@ import { WebSocket, WebSocketServer } from 'ws';
 import { GameManager } from './GameManager';
 import http from "http";
 
-const PORT = process.env.PORT ? parseInt(process.env.PORT) : 8082;
-const WS_PORT = process.env.WS_PORT ? parseInt(process.env.WS_PORT) : 8083;
+const PORT = process.env.PORT || 8082;
 
 const server = http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*'); // Allow all origins
@@ -36,5 +35,4 @@ wss.on('connection', function connection(ws : WebSocket) {
  
 server.listen((PORT), () => {
   console.log("HTTPS server is Running on PORT: ", PORT);
-  console.log(`HTTPS server started on port ${server.address()}`);
 })

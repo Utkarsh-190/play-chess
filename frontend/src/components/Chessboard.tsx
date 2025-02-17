@@ -81,10 +81,10 @@ export const Chessboard = ({board, setBoard, chess, socket, flipped, playerColor
 
     return (
         <div className="flex flex-col">
-            {board.map((row, i) => {
+            {board.map((_row, i) => {
                 const rowIndex = flipped ? 7 - i : i;
                 return <div key={i} className="w-160 flex">
-                    {board[rowIndex].map((col, j) => {
+                    {board[rowIndex].map((_col, j) => {
                         const colIndex = flipped ? 7 - j : j;
                         const piece = board[rowIndex][colIndex];
                         let curCellLocation = String.fromCharCode(97 + (colIndex%8)) + String(8 - (rowIndex)) as Square;
