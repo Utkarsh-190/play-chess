@@ -1,10 +1,16 @@
 import { WebSocket, WebSocketServer } from 'ws';
 import { GameManager } from './GameManager';
-import http from "http";
+import https from "https";
+import fs from "fs";
+import path from "path";
 
 const PORT = process.env.PORT || 8082;
+const options = {
+  key: process.env.SSL_KEY || fs.readFileSync(path.join(__dirname, '..\\certs', 'key.pem')),
+  cert: process.env.SSL_CERT || fs.readFileSync(path.join(__dirname, '..\\certs', 'cert.pem'))
+};
 
-const server = http.createServer((req, res) => {
+const server = https.createServer(options, (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*'); // Allow all origins
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
