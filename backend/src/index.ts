@@ -4,7 +4,7 @@ import https from "https";
 import fs from "fs";
 import path from "path";
 
-const PORT = process.env.PORT || 8082;
+const PORT = process.env.PORT || 8080;
 const options = {
   key: process.env.SSL_KEY || fs.readFileSync(path.join(__dirname, '../certs', 'key.pem')),
   cert: process.env.SSL_CERT || fs.readFileSync(path.join(__dirname, '../certs', 'cert.pem'))
